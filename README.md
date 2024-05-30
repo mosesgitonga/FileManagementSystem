@@ -3,14 +3,15 @@ File Management System
 [Introduction](introduction)
 
 
--- Introduction
+- [Introduction]
+
 file management system is a software in which organization can be able to share files in an easy way.
 
 - Technologies
-  Backend:
+  Backend:\n
     Python - flask, 
     MongoDb,
-  Frontend:
+  Frontend:\n
     javascript - React, 
     Html,
     css,
