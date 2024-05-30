@@ -8,10 +8,10 @@ File Management System
 file management system is a software in which organization can be able to share files in an easy way.
 
 - Technologies
-  Backend:\n
+  Backend:
     Python - flask, 
     MongoDb,
-  Frontend:\n
+  Frontend:
     javascript - React, 
     Html,
     css,
