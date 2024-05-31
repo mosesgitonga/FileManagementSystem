@@ -1,4 +1,5 @@
 from flask import jsonify
+from datetime import datetime
 from models.models import User
 from models.engine.db_storage import DBStorage
 import json
@@ -89,7 +90,7 @@ class Users:
         except Exception as e:
             return jsonify({"message": str(e)}), 500
 
-    def change_user_type(self, user_id, user_type):
+    def change_user_type(self, data):
         """
         Changes the user type, e.g., from admin to member or from member to admin.
         
@@ -100,16 +101,20 @@ class Users:
         Returns:
         Response: JSON response indicating success or failure of the operation.
         """
-        if not user_id:
-            print('Expected user_id to be passed in the class method parameters.')
-            return jsonify({"message": "User ID is required."}), 400
-
         try:
+            user_id = data.get('user_id')
+            user_type = data.get('user_type')
+            if not user_id:
+                print('Expected user_id to be passed in the class method parameters.')
+                return jsonify({"message": "User ID is required."}), 400
+
+        
             user = self.storage.get(User, id=user_id)
             if user is None:
                 return jsonify({"message": "User not found."}), 404
 
             user.user_type = user_type
+            user.updated_at = datetime.utcnow() # update time that data was updated
             self.storage.new(user)
             self.storage.save()
             return jsonify({"message": "User type changed successfully."}), 200
@@ -117,7 +122,7 @@ class Users:
             print(e)
             return jsonify({"message": "Internal server error"}), 500
 
-    def delete_user(self, user_id):
+    def delete_user(self, data):
         """
         Deletes a user by their ID.
         
@@ -128,6 +133,7 @@ class Users:
         Response: JSON response indicating success or failure of the operation.
         """
         try:
+            user_id = data.get('user_id')
             user = self.storage.get(User, id=user_id)
             if user is None:
                 return jsonify({"message": "User not found."}), 404

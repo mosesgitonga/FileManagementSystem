@@ -40,3 +40,23 @@ def list_users_in_dept():
         print(e)
         return jsonify({"message": "Internal server error"}), 500
 
+
+@users_bp.route('user_type_update', methods=['POST'], strict_slashes=False)
+def update_user_type():
+    try:
+        data = request.get_json()
+        response = users.change_user_type(data)
+        return response
+    except Exception as e:
+        print(e)
+        return jsonify({"message": "Internal server error"}), 500
+
+@users_bp.route('delete_user', methods=['DELETE'], strict_slashes=False)
+def delete_user():
+    try:
+        data = request.get_json()
+        response = users.delete_user(data)
+        return response
+    except Exception as e:
+        print(e)
+        return jsonify({"message": "Internal server error"})
