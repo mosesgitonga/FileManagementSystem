@@ -1,6 +1,8 @@
-from models.engine.db_storage import DBStorage
-"""
-initializes the models package
-"""
-storage = DBStorage()
-storage.reload()
+from models.models import User, Department, Document, DocumentTransfer
+from models.base_model import Base
+
+
+
+__all__ = [
+    'User', 'Department', 'Document', 'DocumentTransfer', 'Base'
+]

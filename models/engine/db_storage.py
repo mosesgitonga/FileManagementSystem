@@ -4,11 +4,13 @@ Contains the class DBStorage
 """
 
 from os import getenv
-import sqlalchemy
 from sqlalchemy import create_engine
 from sqlalchemy.orm import scoped_session, sessionmaker
 from dotenv import load_dotenv
-from base_model import Base
+import os
+
+from models.base_model import Base
+from models.models import User, Department, Document, DocumentTransfer
 
 load_dotenv()
 
@@ -17,7 +19,9 @@ class DBStorage:
     __engine = None
 
     def __init__(self):
+        """Initializes the DBStorage instance"""
         self.db_URI = getenv('SQLALCHEMY_DATABASE_URI')
+        print(f"Database URI: {self.db_URI}")
         if not self.db_URI:
             raise ValueError("No SQLALCHEMY_DATABASE_URI environment variable set")
         self.__engine = create_engine(self.db_URI)
@@ -42,7 +46,12 @@ class DBStorage:
 
     def reload(self) -> None:
         """Reloads the data in the database."""
-        Base.metadata.create_all(self.__engine)
+        print("Creating tables if they don't exist...")
+        try:
+            Base.metadata.create_all(self.__engine)
+            print("Tables created.")
+        except Exception as e:
+            print(f"Error creating tables: {e}")
         sess_factory = sessionmaker(bind=self.__engine, expire_on_commit=False)
         Session = scoped_session(sess_factory)
         self.__session = Session
@@ -63,3 +72,4 @@ class DBStorage:
     def close(self):
         """Closes the current session."""
         self.__session.remove()
+
