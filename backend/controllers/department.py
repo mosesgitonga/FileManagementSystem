@@ -1,6 +1,6 @@
 from flask import jsonify
-from models.models import Department
-from models.engine import DBStorage
+from models.models import Department, User
+from models.engine.db_storage import DBStorage
 import json
 
 class Departments:
@@ -26,8 +26,9 @@ class Departments:
         Response: JSON response indicating success or failure of the operation.
         """
         try:
+            admin_id = data.get('admin_id')
             # Verify the user is an admin
-            user = self.storage.get(User, id=user_id)
+            user = self.storage.get(User, id=admin_id)
             if not user or user.user_type != 'admin':
                 return jsonify({"message": "Unauthorized, contact admin"}), 403
 
@@ -80,7 +81,7 @@ class Departments:
         Response: JSON response containing a list of all departments.
         """
         try:
-            depts = self.storage.get(Department).all()
+            depts = self.storage.get(Department)
             jsonified_depts = [dept.to_dict() for dept in depts]
             return jsonify({"depts": jsonified_depts}), 200
         except Exception as e:
@@ -92,7 +93,7 @@ class Departments:
         Changes the name of a department.
         
         Parameters:
-        id (str): The ID of the department whose name is to be changed.
+        id (str): The ID of the department whose department name is to be changed.
         new_name (str): The new name for the department.
         
         Returns:
@@ -156,3 +157,4 @@ class Departments:
         except Exception as e:
             print(e)
             return jsonify({"message": "Internal server error"}), 500
+ 

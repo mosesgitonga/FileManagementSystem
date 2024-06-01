@@ -12,6 +12,7 @@ import os
 from models.base_model import Base
 from models.models import User, Department, Document, DocumentTransfer
 
+# loads enviroment variables from the .env file
 load_dotenv()
 
 class DBStorage:

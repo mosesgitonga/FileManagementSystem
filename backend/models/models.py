@@ -4,7 +4,7 @@ from datetime import datetime
 from .base_model import BaseModel, Base
 
 """
-Structure of the model where obtained data will be stored
+Schema where obtained data will be stored
 """
 
 class User(BaseModel, Base):
