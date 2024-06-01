@@ -12,6 +12,7 @@ class User(BaseModel, Base):
     first_name = Column(String(90), nullable=False)
     second_name = Column(String(90), nullable=False)
     password = Column(String(100), nullable=False)
+    email = Column(String(100), unique=True, nullable=False)
     employee_id = Column(String(100), unique=True, nullable=True)  # id could be a string eg: 'A123', 'B234'
     user_type = Column(String(100), nullable=False)  # [admin, member]
     department_id = Column(String(120), ForeignKey('departments.id'), nullable=True)

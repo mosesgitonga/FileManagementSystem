@@ -1,4 +1,5 @@
 from flask import Flask, Blueprint, request, jsonify
+from flask_jwt_extended import jwt_required, get_jwt_identity
 import os
 import sys
 
@@ -11,7 +12,7 @@ from controllers.user import Users
 users = Users()
 users_bp = Blueprint('users', __name__, url_prefix='/api/users/')
 
-@users_bp.route('/create', methods=['POST'], strict_slashes=False)
+@users_bp.route('/register', methods=['POST'], strict_slashes=False)
 def create_user():
     try:
         data = request.get_json()
@@ -22,6 +23,7 @@ def create_user():
         return jsonify({"message": "Internal server error"}), 500
 
 @users_bp.route('list_all', methods=['GET'], strict_slashes=False)
+@jwt_required()
 def list_all_users():
     try:
         response = users.list_all_users()
@@ -31,6 +33,7 @@ def list_all_users():
         return jsonify({"message": "Internal server error"}), 500
     
 @users_bp.route('list_users_dept', methods=['GET'], strict_slashes=False)
+@jwt_required()
 def list_users_in_dept():
     try:
         data = request.get_json()
@@ -42,6 +45,7 @@ def list_users_in_dept():
 
 
 @users_bp.route('user_type_update', methods=['POST'], strict_slashes=False)
+@jwt_required()
 def update_user_type():
     try:
         data = request.get_json()
@@ -52,6 +56,7 @@ def update_user_type():
         return jsonify({"message": "Internal server error"}), 500
 
 @users_bp.route('delete_user', methods=['DELETE'], strict_slashes=False)
+@jwt_required()
 def delete_user():
     try:
         data = request.get_json()
@@ -60,3 +65,4 @@ def delete_user():
     except Exception as e:
         print(e)
         return jsonify({"message": "Internal server error"})
+

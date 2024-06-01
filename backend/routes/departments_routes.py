@@ -1,4 +1,5 @@
 from flask import Flask, Blueprint, request, jsonify
+from flask_jwt_extended import jwt_required
 import os
 import sys
 
@@ -12,6 +13,7 @@ departments = Departments()
 dept_bp = Blueprint('dept', __name__, url_prefix='/api/dept/')
 
 @dept_bp.route('/create', methods=['POST'], strict_slashes=False)
+@jwt_required()
 def create_dept():
     try:
         data = request.get_json()
@@ -22,6 +24,7 @@ def create_dept():
         return jsonify({"message": "Internal server error"}), 500
 
 @dept_bp.route('get/<id>', methods=['GET'], strict_slashes=False)
+@jwt_required()
 def get_department(id):
     try:
         response = departments.get_department_by_id(id)   
@@ -31,6 +34,7 @@ def get_department(id):
         return jsonify({"error": "Internal server error"})
     
 @dept_bp.route('list/all', methods=['GET'], strict_slashes=False)
+@jwt_required()
 def list_all():
     try:
         response = departments.list_all_departments()
@@ -39,6 +43,7 @@ def list_all():
         return jsonify({"error": "Internal server error"})
 
 @dept_bp.route('update/name/<id>', methods=['POST'], strict_slashes=False)
+@jwt_required()
 def update_dept_name(id):
     try:
         new_name = data['new_name'] = request.get('new_name')
@@ -49,6 +54,7 @@ def update_dept_name(id):
         return jsonify({"error": "Internal server error"}), 500
 
 @dept_bp.route('update/description/<id>', methods=['POST'], strict_slashes=False)
+@jwt_required()
 def update_description(id):
     try:
         data = request.get_json()
@@ -61,6 +67,7 @@ def update_description(id):
 
 
 @dept_bp.route('delete/<id>', methods=['POST'], strict_slashes=False)
+@jwt_required()
 def delete(id):
     try:
         response = departments.delete_department(id)
