@@ -1,5 +1,5 @@
 from flask import Blueprint, request, jsonify
-from flask_jwt_extended import create_access_token, jwt_required
+from flask_jwt_extended import create_access_token, jwt_required, get_jwt
 import bcrypt
 from models.models import User
 from models.engine.db_storage import DBStorage
@@ -42,13 +42,3 @@ def login():
         return jsonify({"message": "Internal server error"})
     
 
-@auth_bp.route('user/logout', methods=['DELETE'], strict_slashes=False)
-@jwt_required()
-def logout():
-    try:
-        jti = get_jwt()['jti']  # JWT ID, a unique identifier for the token
-        redis_store.set(jti, 'revoked', ex=3600)  # Token will be revoked for 1 hour (3600 seconds)
-        return jsonify({"message": "Successfully logged out"}), 200
-    except Exception as e:
-        print(e)
-        return jsonify({"message": "Internal server error"})

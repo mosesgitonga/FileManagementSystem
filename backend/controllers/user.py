@@ -32,6 +32,7 @@ class Users:
         try:
             first_name = data.get('first_name')
             second_name = data.get('second_name')
+            email = data.get('email')
             password = data.get('password')
             employee_id = data.get('employee_id')
             existing_users = self.storage.get(User)
@@ -47,7 +48,13 @@ class Users:
             if existing_employee_id:
                 print('employee id already exists')
                 return jsonify({"message": "Employee id already exists"})
-
+            
+            #check if email is registered
+            existing_email_user = self.storage.get(User, email=email)
+            if existing_email_user:
+                print('email is already registered')
+                return jsonify({"message": "email is already registered"})
+            
             # encode password
             encoded_password = password.encode('utf-8')
             # hash password
@@ -56,6 +63,7 @@ class Users:
             new_user = User(
                 id=uuid.uuid4(),
                 first_name=first_name,
+                email=email,
                 password=hashed_password,
                 second_name=second_name,
                 employee_id=employee_id,
