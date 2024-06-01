@@ -30,10 +30,10 @@ class Department(BaseModel, Base):
 class Document(BaseModel, Base):
     __tablename__ = "documents"
     filename = Column(String(120), nullable=False)
+    description = Column(String(400), nullable=True)
     filepath = Column(String(180), nullable=False)
     uploaded_by = Column(String(120), ForeignKey('users.id'), nullable=False)
     current_department_id = Column(String(120), ForeignKey('departments.id'), nullable=False)
-    timestamp = Column(DateTime, default=datetime.utcnow, nullable=False)
     user = relationship("User")
     department = relationship("Department", back_populates="documents")
 
