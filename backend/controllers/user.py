@@ -2,8 +2,11 @@ from flask import jsonify
 from datetime import datetime
 from models.models import User
 from models.engine.db_storage import DBStorage
+from flask_jwt_extended import create_access_token
 import json
 import uuid
+import bcrypt
+
 class Users:
     """
     Users class to handle operations related to User management.
@@ -26,33 +29,43 @@ class Users:
         Returns:
         Response: JSON response indicating success or failure of the operation.
         """
-        first_name = data.get('first_name')
-        second_name = data.get('second_name')
-        employee_id = data.get('employee_id')
-        existing_users = self.storage.get(User)
-
-        # Check if there are any users in the database
-        if not existing_users:
-            user_type = 'admin'  # First user becomes admin
-        else:
-            user_type = 'member' # rest of the users become members unless promoted by admin
-        
-        #check if employee id exists to make sure it is unique
-        existing_employee_id = self.storage.get(User, employee_id=employee_id)
-        if existing_employee_id:
-            print('employee id already exists')
-            return jsonify({"message": "Employee id already exists"})
-
-        new_user = User(
-            id=uuid.uuid4(),
-            first_name=first_name,
-            second_name=second_name,
-            employee_id=employee_id,
-            user_type=user_type
-        )
         try:
+            first_name = data.get('first_name')
+            second_name = data.get('second_name')
+            password = data.get('password')
+            employee_id = data.get('employee_id')
+            existing_users = self.storage.get(User)
+
+            # Check if there are any users in the database
+            if not existing_users:
+                user_type = 'admin'  # First user becomes admin
+            else:
+                user_type = 'member' # rest of the users become members unless promoted by admin
+            
+            #check if employee id exists to make sure it is unique
+            existing_employee_id = self.storage.get(User, employee_id=employee_id)
+            if existing_employee_id:
+                print('employee id already exists')
+                return jsonify({"message": "Employee id already exists"})
+
+            # encode password
+            encoded_password = password.encode('utf-8')
+            # hash password
+            hashed_password = bcrypt.hashpw(encoded_password, bcrypt.gensalt(11))
+
+            new_user = User(
+                id=uuid.uuid4(),
+                first_name=first_name,
+                password=hashed_password,
+                second_name=second_name,
+                employee_id=employee_id,
+                user_type=user_type
+            )
+        
             self.storage.new(new_user)
             self.storage.save()
+
+            access_token = create_access_token(identity=new_user.id)
             return jsonify({"message": "User created successfully."}), 201
         except Exception as e:
             print(e)
