@@ -2,6 +2,7 @@ from flask import Flask, jsonify
 from flask_jwt_extended import JWTManager, jwt_required, get_jwt
 from flask_redis import FlaskRedis
 from dotenv import load_dotenv
+from datetime import timedelta
 import os
 import sys
 
@@ -24,6 +25,12 @@ app.config['JWT_BLACKLIST_TOKEN_CHECKS'] = ['access', 'refresh']
 
 app.config['REDIS_URL'] = "redis://localhost:6379/0"
 
+
+# Set token expiration
+app.config['JWT_ACCESS_TOKEN_EXPIRES'] = timedelta(days=365*15)  # Access token expires in 15 minutes
+app.config['JWT_REFRESH_TOKEN_EXPIRES'] = timedelta(minutes=30)    # Refresh token expires in 30 days
+
+
 jwt = JWTManager(app)
 redis_store = FlaskRedis(app)
 
@@ -42,6 +49,7 @@ def revoked_token_callback(jwt_header, jwt_payload):
 from routes.users_routes import users_bp
 from routes.departments_routes import dept_bp
 from routes.auth_routes import auth_bp
+from routes.doc_route import doc_bp
 
 @auth_bp.route('user/logout', methods=['DELETE'], strict_slashes=False)
 @jwt_required()
@@ -57,6 +65,7 @@ def logout():
 app.register_blueprint(users_bp)
 app.register_blueprint(dept_bp)
 app.register_blueprint(auth_bp)
+app.register_blueprint(doc_bp)
 
 if __name__ == "__main__":
     try:

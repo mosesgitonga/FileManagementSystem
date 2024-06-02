@@ -1,3 +1,4 @@
+from flask_jwt_extended import create_access_token, jwt_required, get_jwt, create_refresh_token, get_jwt_identity
 from flask import jsonify
 from models.models import Department, User
 from models.engine.db_storage import DBStorage
@@ -26,7 +27,7 @@ class Departments:
         Response: JSON response indicating success or failure of the operation.
         """
         try:
-            admin_id = data.get('admin_id')
+            admin_id = get_jwt_identity()
             # Verify the user is an admin
             user = self.storage.get(User, id=admin_id)
             if not user or user.user_type != 'admin':
@@ -35,6 +36,7 @@ class Departments:
             name = data['name']
             description = data.get('description', '')
 
+            
             # Make sure the name does not exist 
             existing_dept = self.storage.get(Department, name=name)
             if existing_dept:
@@ -47,6 +49,10 @@ class Departments:
 
             self.storage.new(new_dept)
             self.storage.save()
+            user.department_id = new_dept.id
+            self.storage.new(user)
+            self.storage.save()
+            self.storage.close()
             return jsonify({"message": "Department created successfully."}), 201
         except Exception as e:
             print(e)
@@ -87,6 +93,25 @@ class Departments:
         except Exception as e:
             print(e)
             return jsonify({"message": "Internal server error"}), 500
+
+    def add_user_to_dept(self, data):
+        """
+        adds user to a certain department
+        """
+        try:
+            data = request.get_json()
+            dept_id = data.get('dept_id')
+            user_email = data.get('email')
+            # get user from email
+            user = self.storage.get(User, email=email)
+            user.department_id = dept_id
+            self.storage.new(user)
+            self.storage.save()
+            self.storage.close()
+            return jsonify({"message": "user dept updated successfuly"})
+        except Exception as e:
+            print(e)
+            return jsonify({"message": "Internal server error"})
 
     def change_dept_name(self, id, new_name):
         """

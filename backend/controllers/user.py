@@ -2,10 +2,20 @@ from flask import jsonify
 from datetime import datetime
 from models.models import User
 from models.engine.db_storage import DBStorage
-from flask_jwt_extended import create_access_token
+from flask_jwt_extended import create_access_token, get_jwt_identity
 import json
 import uuid
 import bcrypt
+import re
+
+
+def is_valid_email_format(email):
+    """verify email format"""
+    email_regex = r'^[\w\.-]+@[\w\.-]+\.\w+$'
+
+    if not re.match(email_regex, email):
+        print('invalid email format')
+        return False
 
 class Users:
     """
@@ -36,6 +46,11 @@ class Users:
             password = data.get('password')
             employee_id = data.get('employee_id')
             existing_users = self.storage.get(User)
+
+            #check email format
+            if is_valid_email_format(email) is False:
+                print('invalid email format')
+                return jsonify('invalid email format'), 400
 
             # Check if there are any users in the database
             if not existing_users:
@@ -143,6 +158,23 @@ class Users:
             print(e)
             return jsonify({"message": "Internal server error"}), 500
 
+    def update_pasword(self, data):
+        try:
+            current_user_id = get_jwt_identity()
+            new_password = data.get('new_password')
+
+            user = self.storage.get(User, id=current_user_id)
+            if user is None:
+                return jsonify({"error": "unable to get the current user"})
+            user.password = new_password
+
+            self.storage.new(user)
+            self.storage.save()
+            self.storage.close()
+        except Exception as e:
+            print(e)
+            return jsonify({"message": "Internal server error"})
+        
     def delete_user(self, data):
         """
         Deletes a user by their ID.
