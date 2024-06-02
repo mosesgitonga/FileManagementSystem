@@ -1,0 +1,63 @@
+/* src/components/WindowFrame.css */
+.window-frame {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100vw;
+    height: 100vh;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    pointer-events: none; /* Ensures it doesn't interfere with other UI elements */
+    z-index: 1000; /* Ensures it stays on top of other content */
+  }
+  
+  .window-frame svg {
+    width: 100%;
+    height: 100%;
+  }
+  
+  .window-frame path {
+    stroke: #00ff00;
+    stroke-width: 2;
+    fill: none;
+    filter: drop-shadow(0 0 6px #00ff00); /* Glowing effect */
+  }
+  
+  .window-frame .content {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    text-align: center;
+    pointer-events: all; /* Allows interaction with the content */
+    color: #00ff00;
+    font-family: 'Orbitron', sans-serif;
+  }
+  
+  .window-frame .content h1 {
+    font-size: 2rem;
+    margin-bottom: 1rem;
+  }
+  
+  .window-frame .content p {
+    font-size: 1.2rem;
+    margin-bottom: 1.5rem;
+  }
+  
+  .window-frame .content button {
+    background-color: transparent;
+    border: 2px solid #00ff00;
+    color: #00ff00;
+    font-family: 'Orbitron', sans-serif;
+    padding: 10px 20px;
+    margin: 0 10px;
+    cursor: pointer;
+    transition: background-color 0.3s, color 0.3s;
+  }
+  
+  .window-frame .content button:hover {
+    background-color: #00ff00;
+    color: #000;
+  }
+  
