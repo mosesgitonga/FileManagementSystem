@@ -1,0 +1,109 @@
+/* src/components/SignupPage.css */
+@keyframes glow {
+    0% {
+      stroke: #00ff00;
+      filter: drop-shadow(0 0 6px #00ff00);
+    }
+    50% {
+      stroke: #00ff00;
+      filter: drop-shadow(0 0 12px #00ff00);
+    }
+    100% {
+      stroke: #00ff00;
+      filter: drop-shadow(0 0 6px #00ff00);
+    }
+  }
+  
+  @keyframes fadeIn {
+    0% {
+      opacity: 0;
+      transform: translateY(20px);
+    }
+    100% {
+      opacity: 1;
+      transform: translateY(0);
+    }
+  }
+  
+  .signup-page {
+    position: relative;
+    width: 100vw;
+    height: 100vh;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+  }
+  
+  .signup-page .window-frame {
+    position: absolute;
+    width: 100%;
+    height: 100%;
+    z-index: 1;
+  }
+  
+  .signup-page svg {
+    width: 100%;
+    height: 100%;
+  }
+  
+  .signup-page path {
+    stroke: #00ff00;
+    stroke-width: 2;
+    fill: none;
+    animation: glow 2s infinite ease-in-out;
+  }
+  
+  .signup-page .content {
+    position: relative;
+    z-index: 2;
+    color: #00ff00;
+    font-family: 'Orbitron', sans-serif;
+    text-align: center;
+    animation: fadeIn 1.5s ease-out forwards;
+  }
+  
+  .signup-page .content h1 {
+    font-size: 2rem;
+    margin-bottom: 1rem;
+  }
+  
+  .signup-page .content form {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+  }
+  
+  .signup-page .content .form-group {
+    margin-bottom: 1rem;
+  }
+  
+  .signup-page .content label {
+    display: block;
+    margin-bottom: 0.5rem;
+  }
+  
+  .signup-page .content input {
+    padding: 10px;
+    font-size: 1rem;
+    border: 2px solid #00ff00;
+    background-color: transparent;
+    color: #00ff00;
+    outline: none;
+  }
+  
+  .signup-page .content button {
+    background-color: transparent;
+    border: 2px solid #00ff00;
+    color: #00ff00;
+    font-family: 'Orbitron', sans-serif;
+    padding: 10px 20px;
+    margin-top: 1rem;
+    cursor: pointer;
+    transition: background-color 0.3s, color 0.3s;
+  }
+  
+  .signup-page .content button:hover {
+    background-color: #00ff00;
+    color: #000;
+  }
+  
