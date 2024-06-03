@@ -1,0 +1,74 @@
+/* src/components/SignupPage.module.css */
+.loginPage {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    min-height: 100vh;
+    background-color: #000000;
+    padding: 20px;
+  }
+  h1 {
+    position: relative;
+    text-shadow: 0 0 10px #00d9ff, 0 0 20px #00d9ff, 0 0 30px #00d9ff, 0 0 40px #00d9ff, 0 0 70px #00d9ff, 0 0 80px #00d9ff, 0 0 100px #00d9ff, 0 0 150px #00d9ff;
+  }
+  .content {
+    background: rgb(10, 9, 9);
+    padding: 20px;
+    border-radius: 10px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    max-width: 400px;
+    width: 100%;
+  }
+  
+  
+  form {
+    display: flex;
+    flex-direction: column;
+  }
+  
+  .formGroup {
+    margin-bottom: 15px;
+  }
+  
+  label {
+    display: block;
+    margin-bottom: 5px;
+    font-weight: bold;
+  }
+  
+  input[type="text"],
+  input[type="email"],
+  input[type="password"] {
+    width: calc(100% - 10px);
+    padding: 10px;
+    border: 3px solid  #00d9ff;
+    background-color: #000000;
+    color:#00d9ff;
+    font-family: 'orbitron';
+    border-radius: 0px;
+  }
+  
+  button {
+    padding: 10px;
+    background-color: #00d9ff;
+    color: rgb(0, 0, 0);
+    border: none;
+    border-radius: 0px;
+    cursor: pointer;
+    transition: background-color 0.3s;
+    font-weight: 200px;
+  }
+  
+  button:hover {
+    background-color: #010102;
+    color:#00d9ff;
+    border: 1px solid  #6699a1;
+  }
+  
+  .error {
+    color: red;
+    font-size: 12px;
+    margin-top: 5px;
+  }
+  

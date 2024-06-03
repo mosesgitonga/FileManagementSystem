@@ -13,8 +13,8 @@ class Documents:
         self.storage = DBStorage()
         self.UPLOAD_FOLDER = './uploads/files/'
         self.ALLOWED_EXTENSIONS = {'txt', 'pdf', 'jpg', 'jpeg', 'gif', 'webp', 'docx',
-                        'xlsx', 'pptx', 'rtf', 'png', 'bmp', 'svg', 'mp3', 'wav', 'ogg',
-                        'zip', 'tar.gz', 'rar', 'mp4', 'webm', 'mkv'}
+                        'xlsx', 'pptx', 'rtf', 'png', 'bmp', 'wav', 'ogg',
+                        'zip', 'tar.gz', 'rar'}
 
     def allowed_file(self, filename):
         return '.' in filename and \
@@ -51,7 +51,7 @@ class Documents:
                     uploaded_by=user.id,
                     current_department_id=user.department_id,
                 )
-
+                
                 self.storage.new(new_document)
                 self.storage.save()
                 self.storage.close()

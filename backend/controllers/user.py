@@ -10,12 +10,13 @@ import re
 
 
 def is_valid_email_format(email):
-    """verify email format"""
+    """Verify email format"""
     email_regex = r'^[\w\.-]+@[\w\.-]+\.\w+$'
+    if re.match(email_regex, email):
+        return True
+    print('Invalid email format')
+    return False
 
-    if not re.match(email_regex, email):
-        print('invalid email format')
-        return False
 
 class Users:
     """
@@ -40,40 +41,28 @@ class Users:
         Response: JSON response indicating success or failure of the operation.
         """
         try:
-            first_name = data.get('first_name')
-            second_name = data.get('second_name')
+            if not self._validate_input(data):
+                return jsonify({"message": "Missing required fields"}), 400
+
+            first_name = data.get('firstname')
+            second_name = data.get('secondname')
             email = data.get('email')
             password = data.get('password')
             employee_id = data.get('employee_id')
             existing_users = self.storage.get(User)
 
-            #check email format
-            if is_valid_email_format(email) is False:
-                print('invalid email format')
-                return jsonify('invalid email format'), 400
+            if not is_valid_email_format(email):
+                return jsonify({"message": "Invalid email format"}), 400
 
-            # Check if there are any users in the database
-            if not existing_users:
-                user_type = 'admin'  # First user becomes admin
-            else:
-                user_type = 'member' # rest of the users become members unless promoted by admin
-            
-            #check if employee id exists to make sure it is unique
-            existing_employee_id = self.storage.get(User, employee_id=employee_id)
-            if existing_employee_id:
-                print('employee id already exists')
-                return jsonify({"message": "Employee id already exists"})
-            
-            #check if email is registered
-            existing_email_user = self.storage.get(User, email=email)
-            if existing_email_user:
-                print('email is already registered')
-                return jsonify({"message": "email is already registered"})
-            
-            # encode password
-            encoded_password = password.encode('utf-8')
-            # hash password
-            hashed_password = bcrypt.hashpw(encoded_password, bcrypt.gensalt(11))
+            user_type = 'admin' if not existing_users else 'member'
+
+            if self._is_duplicate_employee_id(employee_id):
+                return jsonify({"message": "Employee id already exists"}), 400
+
+            if self._is_duplicate_email(email):
+                return jsonify({"message": "Email is already registered"}), 400
+
+            hashed_password = self._hash_password(password)
 
             new_user = User(
                 id=uuid.uuid4(),
@@ -84,15 +73,35 @@ class Users:
                 employee_id=employee_id,
                 user_type=user_type
             )
-        
+
             self.storage.new(new_user)
             self.storage.save()
 
             access_token = create_access_token(identity=new_user.id)
-            return jsonify({"message": "User created successfully."}), 201
+            return jsonify({"message": "User created successfully.", "access_token": access_token}), 201
+
+        except Exception as e:
+            print(f"Error: {e}")
+            return jsonify({"message": "Internal server error"}), 500
+
+    def _validate_input(self, data):
+        try:
+            required_fields = ['firstname', 'secondname', 'email', 'password', 'employee_id']
+            return all(field in data for field in required_fields)
         except Exception as e:
             print(e)
-            return jsonify({"message": "Internal server error"}), 500
+            return jsonify({"message": "Internal server error"})
+
+    def _is_duplicate_employee_id(self, employee_id):
+        return bool(self.storage.get(User, employee_id=employee_id))
+
+    def _is_duplicate_email(self, email):
+        return bool(self.storage.get(User, email=email))
+
+    def _hash_password(self, password):
+        encoded_password = password.encode('utf-8')
+        return bcrypt.hashpw(encoded_password, bcrypt.gensalt(11))
+
 
     def list_all_users(self):
         """

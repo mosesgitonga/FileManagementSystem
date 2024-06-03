@@ -5,10 +5,20 @@ import './RoundIcon1.css';
 const RoundIcon1 = () => {
   return (
     <div className="round-icon">
-      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100" preserveAspectRatio="none">
-        <circle cx="50" cy="50" r="40" className="icon-circle" />
-        <path d="M50 10 L50 50 L90 50" className="icon-path" />
-        <otherPaths></otherPaths>
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 200 200" preserveAspectRatio="xMidYMid meet">
+        {/* Outer glowing circle */}
+        <circle cx="100" cy="100" r="90" className="icon-outer-circle" />
+
+        {/* Inner circle */}
+        <circle cx="100" cy="100" r="80" className="icon-inner-circle" />
+
+        {/* Text inside the circle */}
+        <text x="100" y="110" textAnchor="middle" dominantBaseline="middle" className="icon-text">
+          Organization X
+        </text>
+
+        {/* Futuristic path */}
+        <path d="M100 10 L100 100" className="icon-path" />
       </svg>
     </div>
   );

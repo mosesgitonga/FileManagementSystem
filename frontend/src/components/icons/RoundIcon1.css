@@ -1,37 +1,33 @@
-/* src/components/icons/RoundIcon1.css */
 .round-icon {
-    width: 100px;
-    height: 100px;
-    position: relative;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-  }
-  
-  .icon-circle {
-    fill: none;
-    stroke: #00ff00;
-    stroke-width: 3;
-    filter: drop-shadow(0 0 5px #00ff00);
-  }
-  
-  .icon-path {
-    fill: none;
-    stroke: #00ff00;
-    stroke-width: 2;
-    filter: drop-shadow(0 0 5px #00ff00);
-    animation: glow 1.5s infinite;
-  }
-  
-  @keyframes glow {
-    0% {
-      stroke-opacity: 0.5;
-    }
-    50% {
-      stroke-opacity: 1;
-    }
-    100% {
-      stroke-opacity: 0.5;
-    }
-  }
-  
+  display: inline-block;
+  width: 200px;
+  height: 200px;
+  position:absolute;
+  right: 0;
+  top: 0;
+  margin: 30px;
+}
+
+.icon-outer-circle {
+  fill: none;
+  stroke: #00ff00; /* Cyan color */
+  stroke-width: 4;
+  filter: url(#glow); /* Apply a glow effect */
+}
+
+.icon-inner-circle {
+  fill: #00ff00; /* Blue color */
+}
+
+.icon-text {
+  fill: #000000; /* Cyan color */
+  font-size: 20px;
+  font-family: 'orbitron', 'Roboto', sans-serif;
+
+ 
+}
+
+.icon-path {
+  stroke: #00ff00; /* Cyan color */
+  stroke-width: 2;
+}

@@ -2,7 +2,7 @@
 import React from 'react';
 import './WindowFrame.css';
 
-const WindowFrame = () => {
+const WindowFrame2 = () => {
   return (
     <div className="window-frame">
     <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;500;700&display=swap" rel="stylesheet"></link>
@@ -24,4 +24,4 @@ const WindowFrame = () => {
   );
 };
 
-export default WindowFrame;
+export default WindowFrame2;

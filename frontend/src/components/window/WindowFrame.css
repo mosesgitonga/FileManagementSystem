@@ -1,20 +1,9 @@
-@font-face {
-  font-family: 'Orbitron';
-  src: url('../path/to/your/font/Orbitron-Regular.ttf') format('truetype');
-  font-weight: normal;
-  font-style: normal;
-}
-
-body {
-  font-family: 'Orbitron', sans-serif;
-  /* Additional styles for the body */
-}
 /* src/components/WindowFrame.css */
 .window-frame {
-    position: fixed;
+    position: absolute;
     top: 0;
     left: 0;
-    width: 100%;
+    width: 100vw;
     height: 100vh;
     display: flex;
     justify-content: center;
@@ -29,10 +18,10 @@ body {
   }
   
   .window-frame path {
-    stroke: #00ff00;
+    stroke: #00d9ff;
     stroke-width: 2;
     fill: none;
-    filter: drop-shadow(0 0 6px #00ff00); /* Glowing effect */
+    filter: drop-shadow(0 0 6px #00d9ff); /* Glowing effect */
   }
   
   .window-frame .content {
@@ -41,11 +30,36 @@ body {
     transform: translate(-50%, -50%);
     text-align: center;
     pointer-events: all; /* Allows interaction with the content */
-    color: #00ff00;
+    color: #00d9ff;
     font-family: 'Orbitron', sans-serif;
-    border: 10px solid #00ff00;
+    border: 10px solid #00d9ff;
     padding: 8px;
+    width: fit-content;
   }
   
-
+  .window-frame .content h1 {
+    font-size: 2rem;
+    margin-bottom: 1rem;
+  }
+  
+  .window-frame .content p {
+    font-size: 1.2rem;
+    margin-bottom: 1.5rem;
+  }
+  
+  .window-frame .content button {
+    background-color: transparent;
+    border: 2px solid #00d9ff;
+    color: #00d9ff;
+    font-family: 'Orbitron', sans-serif;
+    padding: 10px 20px;
+    margin: 0 10px;
+    cursor: pointer;
+    transition: background-color 0.3s, color 0.3s;
+  }
+  
+  .window-frame .content button:hover {
+    background-color: #00d9ff;
+    color: #000;
+  }
   
