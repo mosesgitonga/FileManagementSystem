@@ -1,0 +1,33 @@
+/* src/components/window/WindowFrame.css */
+.window-frame {
+  width: 100%;
+  height: 100vh;
+  position: relative;
+  background-color: #001f3f; /* Dark background color for sci-fi look */
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.glowing-path {
+  stroke: #00ff00;
+  stroke-width: 4;
+  fill: none;
+  filter: drop-shadow(0 0 5px #00ff00);
+}
+
+@keyframes glow {
+  0% {
+    stroke-opacity: 0.5;
+  }
+  50% {
+    stroke-opacity: 1;
+  }
+  100% {
+    stroke-opacity: 0.5;
+  }
+}
+
+.glowing-path {
+  animation: glow 1.5s infinite;
+}

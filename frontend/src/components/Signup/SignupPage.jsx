@@ -1,8 +1,7 @@
 // src/components/SignupPage.js
 import React from 'react';
 import './SignupPage.css';
-import WindowFrame from './WindowFrame';
-
+import WindowFrame from '../window/WindowFrame'; 
 const SignupPage = () => {
   return (
     <div className="signup-page">

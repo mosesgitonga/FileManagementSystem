@@ -1,9 +1,20 @@
+@font-face {
+  font-family: 'Orbitron';
+  src: url('../path/to/your/font/Orbitron-Regular.ttf') format('truetype');
+  font-weight: normal;
+  font-style: normal;
+}
+
+body {
+  font-family: 'Orbitron', sans-serif;
+  /* Additional styles for the body */
+}
 /* src/components/WindowFrame.css */
 .window-frame {
     position: fixed;
     top: 0;
     left: 0;
-    width: 100vw;
+    width: 100%;
     height: 100vh;
     display: flex;
     justify-content: center;
@@ -26,38 +37,15 @@
   
   .window-frame .content {
     position: absolute;
-    top: 50%;
     left: 50%;
     transform: translate(-50%, -50%);
     text-align: center;
     pointer-events: all; /* Allows interaction with the content */
     color: #00ff00;
     font-family: 'Orbitron', sans-serif;
+    border: 10px solid #00ff00;
+    padding: 8px;
   }
   
-  .window-frame .content h1 {
-    font-size: 2rem;
-    margin-bottom: 1rem;
-  }
-  
-  .window-frame .content p {
-    font-size: 1.2rem;
-    margin-bottom: 1.5rem;
-  }
-  
-  .window-frame .content button {
-    background-color: transparent;
-    border: 2px solid #00ff00;
-    color: #00ff00;
-    font-family: 'Orbitron', sans-serif;
-    padding: 10px 20px;
-    margin: 0 10px;
-    cursor: pointer;
-    transition: background-color 0.3s, color 0.3s;
-  }
-  
-  .window-frame .content button:hover {
-    background-color: #00ff00;
-    color: #000;
-  }
+
   
