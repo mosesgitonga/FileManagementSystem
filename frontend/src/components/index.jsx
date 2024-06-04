@@ -11,7 +11,7 @@ const LandingPage = () => {
     <div className="landing-page">
         <WindowFrame />
         <WindowFrame2 />
-      <h1>Welcome to the Document Management System</h1>
+      <h1 className='index-head' >Galactic Document Management System</h1>
       <p>This is a futuristic document management system.</p>
       <div class='buttons'>
         <Link to="/signup">

@@ -1,0 +1,21 @@
+.glow {
+    filter: drop-shadow(0 0 20px #00d9ff);
+    background-color: black;
+}
+.innerButton {
+    background-color: black;
+    border: none;
+    cursor: pointer;
+    padding: 0;
+    color:#00d9ff;
+    width: 100%;
+    height: 100%;
+    border-radius: 50%;
+    font-family: "orbitron", sans-serif;
+    font-size: 15px;
+}
+
+.circleButton {
+    z-index: 1000;
+    position: absolute;
+}

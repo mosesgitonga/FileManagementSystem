@@ -1,4 +1,3 @@
-// src/components/WindowFrame.js
 import React, { useEffect } from 'react';
 import './WindowFrame.css';
 

@@ -1,4 +1,3 @@
-/* src/components/SignupPage.module.css */
 .signupPage {
   display: flex;
   flex-direction: column;
@@ -8,7 +7,7 @@
   background-color: #000000;
   padding: 20px;
 }
-h1 {
+.signup-head {
   position: absolute;
   margin-top: 90px;
   margin-left: 70px;

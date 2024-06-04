@@ -1,4 +1,3 @@
-// src/components/Signup/SignupPage.jsx
 import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import WindowFrame from '../window/WindowFrame'; 
@@ -47,7 +46,7 @@ const SignupPage = () => {
       <WindowFrame />
       <WindowFrame2 />
       <div className={styles.content}>
-        <h1>Sign Up</h1>
+        <h1 className='signup-head' >Sign Up</h1>
         {message && <p>{message}</p>}
         <form onSubmit={handleSubmit}>
           <div className={styles.formGroup}>

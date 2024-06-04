@@ -4,10 +4,10 @@ body {
     color: #00d9ff;
 }
 
-h1 {
+.dash-head {
     position: absolute;
-    top: -3%;
-    left: 29%;
+    left: 28%;
+    top: -2%;
     z-index: 20;
 }
 .first {

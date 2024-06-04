@@ -10,7 +10,13 @@
     text-align: center;
     background-color: #000;
   }
-  
+
+  .index-head {
+    position: absolute;
+    left: 40%;
+    top: -25%;
+    color: white;
+  }
   .landing-page h1 {
     font-size: 2.5rem;
     margin-bottom: 7%;

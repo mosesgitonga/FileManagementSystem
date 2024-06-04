@@ -1,3 +1,5 @@
+import React from "react"
+
 // In this file,
 // we:
 //      1. List down all documents from the api endpoint
@@ -5,3 +7,6 @@
 //          and view doc.
 
 
+const documents = () => {
+    
+}

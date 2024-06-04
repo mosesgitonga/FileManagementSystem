@@ -1,4 +1,3 @@
-// src/components/subwindows/SubWindowFrame2.jsx
 import React from 'react';
 import './SubFrame2.css';
 

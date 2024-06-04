@@ -44,8 +44,9 @@ const LoginPage = () => {
         <WindowFrame2 />
         <div className={styles.content}>
         {message && <p>{message}</p>}
+        <h1 className="login-head" >Login</h1>
+
         <form onSubmit={handleSubmit}>
-            <h1>Login</h1>
             <div className={styles.formGroup}>
             <label htmlFor="email">Email:</label>
             <input
