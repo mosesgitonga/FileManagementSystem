@@ -24,9 +24,13 @@ const LoginPage = () => {
     
         try {
           const response = await api.post('api/auth/user/login', formData);
-          setMessage(response.data.message);
+
           if (response.status === 200) {
-            navigate('/dashboard'); 
+            if (response.data.access_token) {
+              localStorage.setItem('access_token', response.data.access_token); // Or sessionStorage.setItem('access_token', response.data.access_token);
+              navigate('/dashboard'); 
+            }
+            console.log('access token not found in the response')
           }
         } catch (error) {
           if (error.response && error.response.data) {

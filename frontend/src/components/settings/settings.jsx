@@ -11,11 +11,21 @@ const SettingsPage = () => {
   const [message, setMessage] = useState({ text: '', type: '' });
   const [showForm, setShowForm] = useState(false);
   const [departments, setDepartments] = useState([]);
-  const [users, setUsers] = useState([]);
+  const [allUsers, setAllUsers] = useState([]);
+  const [deptUsers, setDeptUsers] = useState([]);
   const [selectedDeptId, setSelectedDeptId] = useState(null);
   const [selectedUserId, setSelectedUserId] = useState(null);
 
   useEffect(() => {
+    const fetchAllUsers = async () => {
+      try {
+        const response = await api.get('api/users/all');
+        setAllUsers(response.data);
+      } catch (error) {
+        console.error('Error fetching users:', error);
+      }
+    };
+
     const fetchDepartments = async () => {
       try {
         const response = await api.get('api/dept/list/all');
@@ -25,23 +35,9 @@ const SettingsPage = () => {
       }
     };
 
+    fetchAllUsers();
     fetchDepartments();
   }, []);
-
-  useEffect(() => {
-    const fetchUsers = async () => {
-      if (selectedDeptId) {
-        try {
-          const response = await api.get(`api/users/list_users_dept/${selectedDeptId}`);
-          setUsers(response.data);
-        } catch (error) {
-          console.error('Error fetching users:', error);
-        }
-      }
-    };
-
-    fetchUsers();
-  }, [selectedDeptId]);
 
   const handleChange = (event) => {
     const { name, value } = event.target;
@@ -72,23 +68,45 @@ const SettingsPage = () => {
     }
   };
 
+  const handleDeptClick = async (deptId) => {
+    setSelectedDeptId(deptId);
+    try {
+      const response = await api.get(`api/users/dept/${deptId}`);
+      setDeptUsers(response.data);
+    } catch (error) {
+      console.error(`Error fetching users in dept id -> ${deptId}:`, error);
+      setDeptUsers([]);
+    }
+  };
+
+  const handleUserClick = (userId) => {
+    setSelectedUserId(userId);
+  };
+
+  const handleAddToDept = async () => {
+    if (!selectedUserId || !selectedDeptId) return;
+    try {
+      const response = await api.post(`api/dept/add_user/${selectedDeptId}/${selectedUserId}`);
+      setMessage({ text: response.data.message, type: 'success' });
+      handleDeptClick(selectedDeptId); // Refresh department users
+    } catch (error) {
+      setMessage({ text: 'Failed to add to department', type: 'error' });
+    }
+  };
+
   const handleAddAdmin = async () => {
-    if (selectedUserId) {
-      try {
-        const response = await api.post(`api/users/add_admin/${selectedUserId}`);
-        if (response.status === 200) {
-          setMessage({ text: response.data.message, type: 'success' });
-        }
-      } catch (error) {
-        setMessage({ text: 'An error occurred while adding admin.', type: 'error' });
-        console.error('Error adding admin:', error);
-      }
+    if (!selectedUserId || !selectedDeptId) return;
+
+    try {
+      const response = await api.post(`api/users/${selectedUserId}/add_admin`);
+      setMessage({ text: response.data.message, type: 'success' });
+    } catch (error) {
+      setMessage({ text: 'Failed to add admin', type: 'error' });
     }
   };
 
   return (
     <div className={styles.settingsPage}>
-
       <div className={styles.content}>
         <h1 className='dept-head'>Settings Page</h1>
         <button onClick={() => setShowForm(!showForm)}>
@@ -121,7 +139,6 @@ const SettingsPage = () => {
                 />
                 {errors.description && <span className={styles.error}>{errors.description}</span>}
               </div>
-              
               <button type="submit">Create Department</button>
             </form>
           </div>
@@ -135,43 +152,54 @@ const SettingsPage = () => {
           <div className={styles.departments}>
             <h2>Departments</h2>
             <ul>
-              {departments.map((dept) => (
-                <li 
-                  key={dept.id} 
-                  onClick={() => setSelectedDeptId(dept.id)}
-                  className={selectedDeptId === dept.id ? styles.selected : ''}
-                >
-                  {dept.name}
-                </li>
-              ))}
+            {departments.map((dept) => (
+              <li
+                key={dept.id}
+                onClick={() => handleDeptClick(dept.id)}
+                className={selectedDeptId === dept.id ? styles.selected : ''}
+              >
+                {dept.name}
+              </li>
+            ))}
             </ul>
           </div>
           <div className={styles.users}>
             <h2>Users</h2>
-            {selectedDeptId ? (
-              users.length > 0 ? (
-                <ul>
-                  {users.map((user) => (
-                    <li 
-                      key={user.id} 
-                      onClick={() => setSelectedUserId(user.id)}
-                      className={selectedUserId === user.id ? styles.selected : ''}
-                    >
-                      {user.name}
-                    </li>
-                  ))}
-                </ul>
-              ) : (
-                <p>No users available.</p>
-              )
+            {deptUsers.length === 0 ? (
+              <p>No users in this department</p>
             ) : (
-              <p>Select a department to view users.</p>
+              <ul>
+                {deptUsers.map((user) => (
+                  <li key={user.id} onClick={() => handleUserClick(user.id)}>
+                    {user.first_name} {user.second_name} - {user.employee_id}
+                  </li>
+                ))}
+              </ul>
             )}
+            <button onClick={handleAddAdmin} disabled={!selectedUserId}>Add Selected User as Admin</button>
+          </div>
+          <div className={styles.allUsers}>
+            <h2>All Users</h2>
+            <ul>
+            {allUsers.length === 0 ? (
+              <p>No users in this department</p>
+            ) : (
+              <ul>
+                {allUsers.map((user) => (
+                  <li
+                    key={user.id}
+                    onClick={() => handleUserClick(user.id)}
+                    className={selectedUserId === user.id ? styles.selected : ''}
+                  >
+                    {user.first_name} {user.second_name} - {user.employee_id}
+                    <button onClick={handleAddToDept}>Add To Dept</button>
+                  </li>
+                ))}
+                </ul>
+              )}
+            </ul>
           </div>
         </div>
-        {selectedUserId && (
-          <button onClick={handleAddAdmin}>Add Selected User as Admin</button>
-        )}
       </div>
     </div>
   );

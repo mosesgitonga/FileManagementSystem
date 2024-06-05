@@ -29,7 +29,7 @@ const SignupPage = () => {
       const response = await api.post('api/auth/user/register', formData);
       setMessage(response.data.message);
       if (response.status === 201) {
-        navigate('/dashboard'); 
+        navigate('/login'); 
       }
     } catch (error) {
       if (error.response && error.response.data) {

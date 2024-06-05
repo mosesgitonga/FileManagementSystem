@@ -1,14 +1,12 @@
 import React from "react";
+import { useNavigate } from 'react-router-dom';
 import './CircleButton.css';
 
 const CircleButton = () => {
+    const navigate = useNavigate();
+
     const handleClick = () => {
-        // Specify the URL you want to open in the pop-up window
-        const url = "https://www.google.com";
-        // Specify the features of the pop-up window
-        const features = "width=600,height=400,resizable=yes,scrollbars=yes,status=yes";
-        // Open the pop-up window
-        window.open(url, "_blank", features);
+        navigate('/settings'); 
     };
 
     return (

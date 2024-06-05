@@ -1,132 +1,135 @@
-/* SettingsPage.module.css */
-
 .settingsPage {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-  }
-  
-  .content {
-    width: 80%;
-    margin: 20px auto;
-    padding: 20px;
-    position: relative;
-    background-color: black;
-    border: 8px solid #00d9ff;
-    box-shadow: 0 0 3px #00d9ff, 0 0 6px #00d9ff, 0 0 12px #00d9ff, 0 0 24px #00d9ff;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
 
-  }
-  
-  .content::before {
-    content: '';
-    position: absolute;
-    top: -20px;
-    left: -20px;
-    right: -20px;
-    bottom: -20px;
-    background: none;
-    border: 50px solid #00d9ff;
-    border-radius: 8px;
-    background-color: #000000;
-    clip-path: polygon(
-      25% 0%, 75% 0%, /* Top two corners */
-      100% 25%, 100% 75%, /* Right two corners */
-      75% 100%, 25% 100%, /* Bottom two corners */
-      0% 75%, 0% 25% /* Left two corners */
-    );
-    z-index: -1;
-    box-shadow: 0 0 10px #00d9ff, 0 0 20px #00d9ff, 0 0 30px #00d9ff, 0 0 40px #00d9ff;
-  }
-  
-  .dept-head {
-    text-align: center;
-    margin-bottom: 20px;
-  }
-  
-  button {
-    padding: 10px 20px;
-    margin-bottom: 20px;
-    border: none;
-    border-radius: 0px;
-    background-color: #00d9ff;
-    color: rgb(0, 0, 0);
-    cursor: pointer;
-  }
-  
-  button:hover {
-    background-color: #000000;
-  }
-  
-  .dropdownForm {
-    margin-bottom: 20px;
-    padding: 20px;
-    border: 2px solid #00d9ff;
-    border-radius: 0px;
-    background-color: #000000;
-  }
-  
-  .formGroup {
-    margin-bottom: 15px;
-  }
-  
-  .formGroup label {
-    display: block;
-    margin-bottom: 5px;
-  }
-  
-  .formGroup input {
-    width: 100%;
-    padding: 8px;
-    box-sizing: border-box;
-    border: 0.01px solid #ccc;
-    border-radius: 0px;
-    appearance: none;
-    outline: none;
-  }
-  
-  .error {
-    color: red;
-    font-size: 0.9em;
-  }
-  
-  .successMessage {
-    color: green;
-  }
-  
-  .errorMessage {
-    color: red;
-  }
-  
-  .lists {
-    display: flex;
-    justify-content: space-between;
-  }
-  
-  .departments, .users {
-    width: 45%;
-  }
-  
-  .departments ul, .users ul {
-    list-style-type: none;
-    padding: 0;
-  }
-  
-  .departments li, .users li {
-    padding: 10px;
-    border: 1px solid #ccc;
-    border-radius: 4px;
-    margin-bottom: 10px;
-    cursor: pointer;
-    background-color: #fff;
-  }
-  
-  .departments li:hover, .users li:hover {
-    background-color: #f1f1f1;
-  }
-  
-  .selected {
-    background-color: #007bff;
-    color: white;
-    box-shadow: 0 0 10px #00d9ff, 0 0 20px #00d9ff, 0 0 30px #00d9ff, 0 0 40px #00d9ff;
-  }
-  
+.content {
+  width: 80%;
+  margin: 20px auto;
+  padding: 20px;
+  position: relative;
+  background-color: black;
+  border: 8px solid #00d9ff;
+  box-shadow: 0 0 3px #00d9ff, 0 0 6px #00d9ff, 0 0 12px #00d9ff, 0 0 24px #00d9ff;
+  height: 90vh; /* Fixed height to allow scrolling */
+  overflow-y: auto; /* Enable vertical scrolling */
+}
+
+.content::before {
+  content: '';
+  position: absolute;
+  top: -20px;
+  left: -20px;
+  right: -20px;
+  bottom: -20px;
+  background: none;
+  border: 50px solid #00d9ff;
+  border-radius: 8px;
+  background-color: #000000;
+  clip-path: polygon(
+    25% 0%, 75% 0%, /* Top two corners */
+    100% 25%, 100% 75%, /* Right two corners */
+    75% 100%, 25% 100%, /* Bottom two corners */
+    0% 75%, 0% 25% /* Left two corners */
+  );
+  z-index: -1;
+  box-shadow: 0 0 10px #00d9ff, 0 0 20px #00d9ff, 0 0 30px #00d9ff, 0 0 40px #00d9ff;
+}
+
+.dept-head {
+  text-align: center;
+  margin-bottom: 20px;
+}
+
+button {
+  padding: 10px 20px;
+  margin-bottom: 20px;
+  border: none;
+  border-radius: 0px;
+  background-color: #00d9ff;
+  color: rgb(0, 0, 0);
+  cursor: pointer;
+}
+
+button:hover {
+  background-color: #000000;
+}
+
+.dropdownForm {
+  margin-bottom: 20px;
+  padding: 20px;
+  border: 2px solid #00d9ff;
+  border-radius: 0px;
+  background-color: #000000;
+}
+
+.formGroup {
+  margin-bottom: 15px;
+}
+
+.formGroup label {
+  display: block;
+  margin-bottom: 5px;
+}
+
+.formGroup input {
+  width: 100%;
+  padding: 8px;
+  box-sizing: border-box;
+  border: 0.01px solid #ccc;
+  border-radius: 0px;
+  appearance: none;
+  outline: none;
+}
+
+.error {
+  color: red;
+  font-size: 0.9em;
+}
+
+.successMessage {
+  color: green;
+}
+
+.errorMessage {
+  color: red;
+}
+
+.lists {
+  display: flex;
+  justify-content: space-between;
+  height: 100%; /* Ensure lists take full height */
+}
+
+.departments, .users, .allUsers {
+  width: 30%; /* Adjust width to fit three columns */
+  height: 100%; /* Full height for scrolling */
+  overflow-y: auto; /* Enable scrolling within each column */
+}
+
+.departments ul, .users ul, .allUsers ul {
+  list-style-type: none;
+  padding: 0;
+  margin: 0; /* Remove default margin */
+}
+
+.departments li, .users li, .allUsers li {
+  padding: 10px;
+  border: 1px solid #00d9ff;
+  border-radius: 4px;
+  margin-bottom: 10px;
+  cursor: pointer;
+  background-color: #000000;
+}
+
+.departments li:hover, .users li:hover, .allUsers li:hover {
+  background-color: #00d9ff;
+  color: black;
+}
+
+.selected {
+  background-color: #00d9ff;
+  color: rgb(0, 0, 0);
+  box-shadow: 0 0 10px #00d9ff, 0 0 20px #00d9ff, 0 0 30px #00d9ff, 0 0 40px #00d9ff;
+}

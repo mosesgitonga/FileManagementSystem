@@ -9,7 +9,7 @@ import "./dashboard.css"
 const Dashboard = () => {
     return (
         <div className="dashboard">
-            <h1 class="dash-head">DOCUMENT MANAGEMENT SYSTEM</h1>
+            <h1 className="dash-head">DOCUMENT MANAGEMENT SYSTEM</h1>
 
             <WindowFrame2 />
             <SubWindowFrame2 className="subframe2"/>
