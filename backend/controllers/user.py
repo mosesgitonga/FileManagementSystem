@@ -1,6 +1,6 @@
 from flask import jsonify
 from datetime import datetime
-from models.models import User
+from models.models import User, Department
 from models.engine.db_storage import DBStorage
 from flask_jwt_extended import create_access_token, get_jwt_identity
 import json
@@ -113,27 +113,46 @@ class Users:
         try:
             users = self.storage.get(User)
             jsonified_users = [user.to_dict() for user in users]
-            return jsonify({"users": jsonified_users})
+            return jsonify(jsonified_users)
         except Exception as e:
             return jsonify({"message": str(e)}), 500
 
-    def list_users_in_dept(self, data):
+    def list_users_in_dept(self, dept_id):
         """
         Lists all users in a certain department.
         
         Parameters:
-        department_id (str): The ID of the department to filter users by.
+        dept_id (str): The ID of the department to filter users by.
         
         Returns:
         Response: JSON response containing a list of users in the specified department.
         """
         try:
-            department_id = data.get('department_id')
-            users = self.storage.get(User).filter_by(department_id=department_id).all()
+            # Check the department exists
+            department = self.storage.get(Department, id=dept_id)
+            print(department)
+            if not department:
+                return jsonify({"message": "Department not found"}), 404
+            print("department found")
+            
+            # Fetch users in the department
+            users = self.storage.get(User, department_id=dept_id)
+            
+            if users is None:
+                print('no user found in this department')
+                return jsonify([]), 200
+            
+            if isinstance(users, User):
+                users = [users]
+            elif not isinstance(users, list):
+                users = list(users)
+            
             jsonified_users = [user.to_dict() for user in users]
-            return jsonify({"users": jsonified_users})
+            return jsonify(jsonified_users), 200
         except Exception as e:
+            print(e)
             return jsonify({"message": str(e)}), 500
+
 
     def change_user_type(self, data):
         """

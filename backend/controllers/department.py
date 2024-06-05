@@ -89,22 +89,21 @@ class Departments:
         try:
             depts = self.storage.get(Department)
             jsonified_depts = [dept.to_dict() for dept in depts]
-            return jsonify({"depts": jsonified_depts}), 200
+            return jsonify(jsonified_depts), 200
         except Exception as e:
             print(e)
             return jsonify({"message": "Internal server error"}), 500
 
-    def add_user_to_dept(self, data):
+    def add_user_to_dept(self, dept_id, user_id):
         """
         adds user to a certain department
         """
         try:
-            data = request.get_json()
-            dept_id = data.get('dept_id')
-            user_email = data.get('email')
-            # get user from email
-            user = self.storage.get(User, email=email)
+
+            # get user from id
+            user = self.storage.get(User, id=user_id)
             user.department_id = dept_id
+            
             self.storage.new(user)
             self.storage.save()
             self.storage.close()

@@ -14,7 +14,7 @@ dept_bp = Blueprint('dept', __name__, url_prefix='/api/dept/')
 
 @dept_bp.route('/create', methods=['POST'], strict_slashes=False)
 @jwt_required()
-def create_dept():
+def create_dept(): 
     try:
         data = request.get_json()
         response = departments.create_dept(data)
@@ -41,6 +41,17 @@ def list_all():
         return response
     except Exception as e:
         return jsonify({"error": "Internal server error"})
+
+
+@dept_bp.route('add_user/<dept_id>/<user_id>', methods=['POST'], strict_slashes=False)
+@jwt_required()
+def add_user_to_dept(dept_id, user_id):
+    try:
+        response = departments.add_user_to_dept(dept_id, user_id)
+        return response
+    except Exception as e:
+        return jsonify({"error": "Internal server error"})
+
 
 @dept_bp.route('update/name/<id>', methods=['POST'], strict_slashes=False)
 @jwt_required()

@@ -22,7 +22,7 @@ def create_user():
         print(e)
         return jsonify({"message": "Internal server error"}), 500
 
-@users_bp.route('list_all', methods=['GET'], strict_slashes=False)
+@users_bp.route('all', methods=['GET'], strict_slashes=False)
 @jwt_required()
 def list_all_users():
     try:
@@ -32,19 +32,18 @@ def list_all_users():
         print(e)
         return jsonify({"message": "Internal server error"}), 500
     
-@users_bp.route('list_users_dept', methods=['GET'], strict_slashes=False)
+@users_bp.route('dept/<dept_id>', methods=['GET'], strict_slashes=False)
 @jwt_required()
-def list_users_in_dept():
+def list_users_in_dept(dept_id):
     try:
-        data = request.get_json()
-        response = users.list_users_in_dept(data)
+        response = users.list_users_in_dept(dept_id)
         return response
     except Exception as e:
         print(e)
         return jsonify({"message": "Internal server error"}), 500
 
 
-@users_bp.route('user_type_update', methods=['POST'], strict_slashes=False)
+@users_bp.route('user/type/update', methods=['POST'], strict_slashes=False)
 @jwt_required()
 def update_user_type():
     try:

@@ -67,8 +67,11 @@ class DBStorage:
 
         if 'id' in kwargs:
             return self.__session.query(cls).filter_by(id=kwargs['id']).first()
-        
-        return self.__session.query(cls).filter_by(**kwargs).first()
+
+        if 'email' in kwargs:
+            return self.__session.query(cls).filter_by(email=kwargs['email']).first()
+
+        return self.__session.query(cls).filter_by(**kwargs).all()
 
     def close(self):
         """Closes the current session."""
