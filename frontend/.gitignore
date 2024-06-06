@@ -22,3 +22,9 @@ dist-ssr
 *.njsproj
 *.sln
 *.sw?
+*.pdf
+*.odt
+*.jpeg
+*.png
+*.jpg
+*.webp

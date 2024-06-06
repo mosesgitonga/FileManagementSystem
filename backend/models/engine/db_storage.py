@@ -25,9 +25,9 @@ class DBStorage:
         print(f"Database URI: {self.db_URI}")
         if not self.db_URI:
             raise ValueError("No SQLALCHEMY_DATABASE_URI environment variable set")
-        self.__engine = create_engine(self.db_URI)
+        self.__engine = create_engine(self.db_URI, pool_size=10, max_overflow=20, pool_timeout=30, pool_recycle=3600)
         self.reload()
-
+ 
     def new(self, obj) -> None:
         """Adds the object to the current database session."""
         self.__session.add(obj)

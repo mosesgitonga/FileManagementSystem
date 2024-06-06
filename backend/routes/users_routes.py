@@ -43,13 +43,14 @@ def list_users_in_dept(dept_id):
         return jsonify({"message": "Internal server error"}), 500
 
 
-@users_bp.route('user/type/update', methods=['POST'], strict_slashes=False)
+@users_bp.route('/type/update/<user_id>', methods=['POST'], strict_slashes=False)
 @jwt_required()
-def update_user_type():
+def update_user_type(user_id):
     try:
         data = request.get_json()
-        response = users.change_user_type(data)
-        return response
+        user_type = data.get('user_type')
+        response = users.change_user_type(user_id, user_type)
+        return response 
     except Exception as e:
         print(e)
         return jsonify({"message": "Internal server error"}), 500

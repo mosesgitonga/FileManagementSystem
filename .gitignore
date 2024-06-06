@@ -2,3 +2,7 @@ fms/
 .env
 __pycache__
 *.pyc
+*.pdf
+*.odg
+*.jpeg
+*.jpg

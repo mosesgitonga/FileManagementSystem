@@ -21,3 +21,13 @@ def upload_file():
     except Exception as e:
         print(e)
         return jsonify({"message": "Error Internal server error"})
+
+@doc_bp.route('/all', methods=['GET'], strict_slashes=False)
+@jwt_required()
+def get_docs():
+    try:
+        response = documents.get_documents()
+        return response
+    except Exception as e:
+        print(e)
+        jsonify({"error": "Internal server error"})

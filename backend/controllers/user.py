@@ -154,7 +154,7 @@ class Users:
             return jsonify({"message": str(e)}), 500
 
 
-    def change_user_type(self, data):
+    def change_user_type(self, user_id, user_type):
         """
         Changes the user type, e.g., from admin to member or from member to admin.
         
@@ -166,13 +166,10 @@ class Users:
         Response: JSON response indicating success or failure of the operation.
         """
         try:
-            user_id = data.get('user_id')
-            user_type = data.get('user_type')
             if not user_id:
                 print('Expected user_id to be passed in the class method parameters.')
                 return jsonify({"message": "User ID is required."}), 400
 
-        
             user = self.storage.get(User, id=user_id)
             if user is None:
                 return jsonify({"message": "User not found."}), 404

@@ -37,8 +37,13 @@ class Documents:
                 return jsonify({"message": "No selected file"}), 400
             if file and self.allowed_file(file.filename):
                 # Generate a unique filename to avoid conflicts
-                filename = secure_filename(file.filename)
-                filename = self.generate_unique_filename(filename)
+                if desired_filename:
+                    file_ext = os.path.splitext(file.filename)[1]
+                    filename = secure_filename(desired_filename)
+                    filename = f"{filename}{file_ext}"
+                else:
+                    filename = secure_filename(file.filename)
+                    filename = self.generate_unique_filename(filename)
 
                 file_path = os.path.join(self.UPLOAD_FOLDER, filename)
                 file.save(file_path)  # Saves file to UPLOAD_FOLDER
@@ -84,5 +89,23 @@ class Documents:
 
         return unique_filename
 
-
-    
+    def get_documents(self):
+        """
+        Gets all documents
+        """
+        try:
+            documents = self.storage.get(Document)  
+            document_list = [
+                {
+                    "id": doc.id,
+                    "filename": doc.filename,
+                    "description": doc.description,
+                    "uploaded_by": doc.uploaded_by,
+                    "created_at": doc.created_at,
+                    "filepath": doc.filepath
+                } for doc in documents
+            ]
+            return jsonify(document_list), 200
+        except Exception as e:
+            print(e)
+            return jsonify({"message": "Internal server error"}), 500

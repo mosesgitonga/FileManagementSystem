@@ -1,7 +1,9 @@
 import React, { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
-import WindowFrame2 from '../window/WindowFrameV2';
+import { Dropdown } from 'react-bootstrap';
+import { BsThreeDotsVertical } from 'react-icons/bs';
 import styles from './SettingsPage.module.css';
+import WindowFrame2 from '../window/WindowFrameV2';
 import api from '../../api/axios';
 
 const SettingsPage = () => {
@@ -83,10 +85,10 @@ const SettingsPage = () => {
     setSelectedUserId(userId);
   };
 
-  const handleAddToDept = async () => {
-    if (!selectedUserId || !selectedDeptId) return;
+  const handleAddToDept = async (userId) => {
+    if (!userId || !selectedDeptId) return;
     try {
-      const response = await api.post(`api/dept/add_user/${selectedDeptId}/${selectedUserId}`);
+      const response = await api.post(`api/dept/add_user/${selectedDeptId}/${userId}`);
       setMessage({ text: response.data.message, type: 'success' });
       handleDeptClick(selectedDeptId); // Refresh department users
     } catch (error) {
@@ -95,10 +97,14 @@ const SettingsPage = () => {
   };
 
   const handleAddAdmin = async () => {
-    if (!selectedUserId || !selectedDeptId) return;
+    if (!selectedUserId) {
+      setMessage({ text: 'No user selected', type: 'error' });
+      return;
+    }
 
     try {
-      const response = await api.post(`api/users/${selectedUserId}/add_admin`);
+      const userType = 'admin';
+      const response = await api.post(`api/users/type/update/${selectedUserId}`, { user_type: userType });
       setMessage({ text: response.data.message, type: 'success' });
     } catch (error) {
       setMessage({ text: 'Failed to add admin', type: 'error' });
@@ -107,8 +113,9 @@ const SettingsPage = () => {
 
   return (
     <div className={styles.settingsPage}>
+      <WindowFrame2 />
       <div className={styles.content}>
-        <h1 className='dept-head'>Settings Page</h1>
+        <h1 className="dept-head">Settings Page</h1>
         <button onClick={() => setShowForm(!showForm)}>
           {showForm ? 'Hide Form' : 'Create Department'}
         </button>
@@ -152,52 +159,69 @@ const SettingsPage = () => {
           <div className={styles.departments}>
             <h2>Departments</h2>
             <ul>
-            {departments.map((dept) => (
-              <li
-                key={dept.id}
-                onClick={() => handleDeptClick(dept.id)}
-                className={selectedDeptId === dept.id ? styles.selected : ''}
-              >
-                {dept.name}
-              </li>
-            ))}
+              {departments.map((dept) => (
+                <li
+                  key={dept.id}
+                  onClick={() => handleDeptClick(dept.id)}
+                  className={selectedDeptId === dept.id ? styles.selected : ''}
+                >
+                  {dept.name}
+                </li>
+              ))}
             </ul>
           </div>
           <div className={styles.users}>
-            <h2>Users</h2>
+            <h2>Deparment Members</h2>
             {deptUsers.length === 0 ? (
               <p>No users in this department</p>
             ) : (
               <ul>
                 {deptUsers.map((user) => (
-                  <li key={user.id} onClick={() => handleUserClick(user.id)}>
-                    {user.first_name} {user.second_name} - {user.employee_id}
+                  <li key={user.id}
+                    onClick={() => handleUserClick(user.id)}
+                    className={selectedUserId === user.id ? styles.selected : ''}
+                    >
+                      {user.first_name} {user.second_name} - {user.user_type}
+                   
+                    <Dropdown>
+                      <Dropdown.Toggle as={BsThreeDotsVertical} />
+                      <Dropdown.Menu>
+                        <Dropdown.Item className="addAsAdmin" onClick={() => handleAddAdmin()}>Add as Admin</Dropdown.Item>
+                        <Dropdown.Item className='addToDept' onClick={() => handleAddToDept(user.id)}>Add to Dept</Dropdown.Item>
+                        {/* Add more actions here */}
+                      </Dropdown.Menu>
+                    </Dropdown>
+                 
+
                   </li>
                 ))}
               </ul>
             )}
-            <button onClick={handleAddAdmin} disabled={!selectedUserId}>Add Selected User as Admin</button>
           </div>
           <div className={styles.allUsers}>
             <h2>All Users</h2>
-            <ul>
             {allUsers.length === 0 ? (
-              <p>No users in this department</p>
+              <p>No users available</p>
             ) : (
               <ul>
                 {allUsers.map((user) => (
-                  <li
-                    key={user.id}
-                    onClick={() => handleUserClick(user.id)}
-                    className={selectedUserId === user.id ? styles.selected : ''}
+                  <li key={user.id} className={selectedUserId === user.id ? styles.selected : ''}
                   >
-                    {user.first_name} {user.second_name} - {user.employee_id}
-                    <button onClick={handleAddToDept}>Add To Dept</button>
+                    <span onClick={() => handleUserClick(user.id)}>
+                      {user.first_name} {user.second_name} - {user.user_type}
+                    </span>
+                    <Dropdown>
+                      <Dropdown.Toggle as={BsThreeDotsVertical} />
+                      <Dropdown.Menu>
+                        <Dropdown.Item onClick={() => handleAddAdmin()}>Add as Admin</Dropdown.Item>
+                        <Dropdown.Item onClick={() => handleAddToDept(user.id)}>Add to Dept</Dropdown.Item>
+                        {/* Add more actions here */}
+                      </Dropdown.Menu>
+                    </Dropdown>
                   </li>
                 ))}
-                </ul>
-              )}
-            </ul>
+              </ul>
+            )}
           </div>
         </div>
       </div>

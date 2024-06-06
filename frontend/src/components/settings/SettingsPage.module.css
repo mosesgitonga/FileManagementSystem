@@ -2,6 +2,7 @@
   display: flex;
   flex-direction: column;
   align-items: center;
+  font-family: "orbitron", sans-serif;
 }
 
 .content {
@@ -14,19 +15,20 @@
   box-shadow: 0 0 3px #00d9ff, 0 0 6px #00d9ff, 0 0 12px #00d9ff, 0 0 24px #00d9ff;
   height: 90vh; /* Fixed height to allow scrolling */
   overflow-y: auto; /* Enable vertical scrolling */
+  font-family: "orbitron", sans-serif;
+
 }
 
 .content::before {
   content: '';
-  position: absolute;
+  position: relative;
   top: -20px;
   left: -20px;
   right: -20px;
   bottom: -20px;
   background: none;
   border: 50px solid #00d9ff;
-  border-radius: 8px;
-  background-color: #000000;
+  border-radius: 1000px;
   clip-path: polygon(
     25% 0%, 75% 0%, /* Top two corners */
     100% 25%, 100% 75%, /* Right two corners */
@@ -130,6 +132,13 @@ button:hover {
 
 .selected {
   background-color: #00d9ff;
-  color: rgb(0, 0, 0);
+  color: #00d9ff;
+  background: #00d9ff;
   box-shadow: 0 0 10px #00d9ff, 0 0 20px #00d9ff, 0 0 30px #00d9ff, 0 0 40px #00d9ff;
+}
+
+.userLink {
+  display: flex;
+  align-items: end;
+  justify-content: space-between;
 }
