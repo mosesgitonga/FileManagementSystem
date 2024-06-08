@@ -12,7 +12,7 @@ from controllers.document import Documents
 documents = Documents()
 doc_bp = Blueprint('docs', __name__, url_prefix='/api/docs')
 
-@doc_bp.route('upload', methods=['POST'], strict_slashes=False)
+@doc_bp.route('/upload', methods=['POST'], strict_slashes=False)
 @jwt_required()
 def upload_file():
     try:
@@ -20,7 +20,7 @@ def upload_file():
         return response 
     except Exception as e:
         print(e)
-        return jsonify({"message": "Error Internal server error"})
+        return jsonify({"message": "Error Internal server error"}), 500
 
 @doc_bp.route('/all', methods=['GET'], strict_slashes=False)
 @jwt_required()
@@ -30,4 +30,14 @@ def get_docs():
         return response
     except Exception as e:
         print(e)
-        jsonify({"error": "Internal server error"})
+        return jsonify({"error": "Internal server error"}), 500
+
+@doc_bp.route('/download/<filename>', methods=['GET'], strict_slashes=False)
+@jwt_required()
+def download(filename):
+    try:
+        response = documents.download_doc(filename)
+        return response
+    except Exception as e:
+        print(e)
+        return jsonify({"error": "Internal server error"}), 500

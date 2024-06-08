@@ -28,8 +28,26 @@ const Documents = () => {
     console.log(`Send document ${docId} to department`);
   };
 
-  const handleDownload = (filePath) => {
-    window.open(filePath, '_blank');
+  const handleDownload = async (filename) => {
+    try {
+      const response = await api.get(`/api/docs/download/${filename}`, {
+        headers: {
+          Authorization: `Bearer ${localStorage.getItem('access_token')}`,
+          "Content-Type": "multipart/form-data"
+        },
+        responseType: 'blob'  // Important to handle binary data
+      });
+
+      const url = window.URL.createObjectURL(new Blob([response.data]));
+      const link = document.createElement('a');
+      link.href = url;
+      link.setAttribute('download', filename); 
+      document.body.appendChild(link);
+      link.click();
+      link.remove();
+    } catch (error) {
+      console.error('Error downloading document:', error);
+    }
   };
 
   return (
@@ -56,7 +74,7 @@ const Documents = () => {
                 <button onClick={() => handleSendToDept(doc.id)}>Send to Dept</button>
               </td>
               <td>
-                <button onClick={() => handleDownload(doc.filepath)}>Download</button>
+                <button onClick={() => handleDownload(doc.filename)}>Download</button>
               </td>
             </tr>
           ))}
