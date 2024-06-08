@@ -33,7 +33,6 @@ const Documents = () => {
       const response = await api.get(`/api/docs/download/${filename}`, {
         headers: {
           Authorization: `Bearer ${localStorage.getItem('access_token')}`,
-          "Content-Type": "multipart/form-data"
         },
         responseType: 'blob'  // Important to handle binary data
       });
@@ -58,7 +57,6 @@ const Documents = () => {
           <tr>
             <th>Filename</th>
             <th>Description</th>
-           
             <th>Created At</th>
             <th>Send to Dept</th>
             <th>Download</th>

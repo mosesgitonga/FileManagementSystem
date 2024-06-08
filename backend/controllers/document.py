@@ -1,5 +1,5 @@
 from datetime import datetime
-from flask import jsonify, request, send_file
+from flask import jsonify, request, send_file, current_app
 from flask_jwt_extended import get_jwt_identity
 from werkzeug.utils import secure_filename
 import os
@@ -37,7 +37,6 @@ class Documents:
             if file and self.allowed_file(file.filename):
                 if desired_filename:
                     file_ext = os.path.splitext(file.filename)[1]
-                    # Ensure the desired filename does not already have an extension
                     if not os.path.splitext(desired_filename)[1]:
                         filename = secure_filename(desired_filename) + file_ext
                     else:
@@ -94,11 +93,16 @@ class Documents:
 
     def download_doc(self, filename):
         try:
-            file_path = os.path.join(f"${self.UPLOAD_FOLDER}", filename)
+            # Get the absolute path to the upload folder
+            upload_folder_abs_path = os.path.abspath(self.UPLOAD_FOLDER)
+            file_path = os.path.join(upload_folder_abs_path, filename)
+            current_app.logger.debug(f"Attempting to download file from: {file_path}")
+
             if os.path.exists(file_path):
                 return send_file(file_path, as_attachment=True)
             else:
+                current_app.logger.error(f"File not found: {file_path}")
                 return jsonify({"message": "File not found"}), 404
         except Exception as e:
-            print(e)
+            current_app.logger.error(e)
             return jsonify({"message": "Internal server error"}), 500
