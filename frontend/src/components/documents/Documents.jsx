@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import api from '../../api/axios';
-import styles from './Documents.module.css';  // Use CSS module
+import styles from './Documents.module.css';
 
 const Documents = () => {
   const [documents, setDocuments] = useState([]);
@@ -34,7 +34,7 @@ const Documents = () => {
         headers: {
           Authorization: `Bearer ${localStorage.getItem('access_token')}`,
         },
-        responseType: 'blob'  // Important to handle binary data
+        responseType: 'blob'  //handle binary data
       });
 
       const url = window.URL.createObjectURL(new Blob([response.data]));

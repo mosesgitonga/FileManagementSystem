@@ -188,7 +188,6 @@ const SettingsPage = () => {
                       <Dropdown.Menu>
                         <Dropdown.Item className="addAsAdmin" onClick={() => handleAddAdmin()}>Add as Admin</Dropdown.Item>
                         <Dropdown.Item className='addToDept' onClick={() => handleAddToDept(user.id)}>Add to Dept</Dropdown.Item>
-                        {/* Add more actions here */}
                       </Dropdown.Menu>
                     </Dropdown>
                  
@@ -215,7 +214,6 @@ const SettingsPage = () => {
                       <Dropdown.Menu>
                         <Dropdown.Item onClick={() => handleAddAdmin()}>Add as Admin</Dropdown.Item>
                         <Dropdown.Item onClick={() => handleAddToDept(user.id)}>Add to Dept</Dropdown.Item>
-                        {/* Add more actions here */}
                       </Dropdown.Menu>
                     </Dropdown>
                   </li>

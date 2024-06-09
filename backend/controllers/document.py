@@ -22,14 +22,19 @@ class Documents:
 
     def upload_file(self):
         try:
+            current_user_id = get_jwt_identity()
+            user = self.storage.get(User, id=current_user_id)
+            if not user.department_id:
+                print('Unauthorized, you dont belong to any department')
+                return jsonify({"message": "Unauthorized, you don't belong to any department"})
+
             if 'file' not in request.files:
                 return jsonify({"message": "No file part"}), 400
             file = request.files['file']
             desired_filename = request.form.get('filename', file.filename)
             description = request.form.get('description')
 
-            current_user_id = get_jwt_identity()
-            user = self.storage.get(User, id=current_user_id)
+            
             name = f"{user.first_name} {user.second_name}"
 
             if file.filename == '':

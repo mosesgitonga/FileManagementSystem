@@ -8,7 +8,9 @@ project_root = os.path.abspath(os.path.join(current_file_path, '..'))
 sys.path.append(project_root)
 
 from controllers.document import Documents
+from controllers.share_doc import Share
 
+share = Share()
 documents = Documents()
 doc_bp = Blueprint('docs', __name__, url_prefix='/api/docs')
 
@@ -41,3 +43,13 @@ def download(filename):
     except Exception as e:
         print(e)
         return jsonify({"error": "Internal server error"}), 500
+
+@doc_bp.route('/share/<doc_id>/<dest_dept_id>', methods=['POST'], strict_slashes=False)
+@jwt_required()
+def share_doc(doc_id, dest_dept_id):
+    try:
+        response = share.share_document(doc_id, dest_dept_id)
+        return response
+    except Exception as e:
+        print(e)
+        return jsonify({"Error": "Internal server error"}), 500
