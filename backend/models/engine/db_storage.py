@@ -57,6 +57,12 @@ class DBStorage:
         Session = scoped_session(sess_factory)
         self.__session = Session
 
+    def query(self, model):
+        """
+        returns query object for the specified object
+        """
+        return self.__session.query(model)
+
     def get(self, cls=None, **kwargs):
         """Returns an object based on the class and key."""
         if not cls:

@@ -14,7 +14,7 @@ class Documents:
         self.UPLOAD_FOLDER = 'uploads/files/'
         self.ALLOWED_EXTENSIONS = {'txt', 'pdf', 'jpg', 'jpeg', 'gif', 'webp', 'docx',
                         'xlsx', 'pptx', 'rtf', 'png', 'bmp', 'wav', 'ogg',
-                        'zip', 'tar.gz', 'rar'}
+                        'zip', 'tar.gz', 'rar', 'odg'}
 
     def allowed_file(self, filename):
         return '.' in filename and \
@@ -80,7 +80,11 @@ class Documents:
 
     def get_documents(self):
         try:
-            documents = self.storage.get(Document)  
+            """returns all documents in the user current department
+            """
+            current_user_id = get_jwt_identity()
+            current_user_dept_id = self.storage.get(User, id=current_user_id).department_id
+            docs = self.storage.get(Document, current_department_id=current_user_dept_id)
             document_list = [
                 {
                     "id": doc.id,
@@ -89,7 +93,7 @@ class Documents:
                     "uploaded_by": doc.uploaded_by,
                     "created_at": doc.created_at,
                     "filepath": doc.filepath
-                } for doc in documents
+                } for doc in docs
             ]
             return jsonify(document_list), 200
         except Exception as e:

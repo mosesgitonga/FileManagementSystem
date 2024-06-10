@@ -27,6 +27,8 @@ def upload_file():
 @doc_bp.route('/all', methods=['GET'], strict_slashes=False)
 @jwt_required()
 def get_docs():
+    """returns all documents in the user current department
+    """
     try:
         response = documents.get_documents()
         return response

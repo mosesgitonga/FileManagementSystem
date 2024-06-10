@@ -6,11 +6,30 @@ const Documents = () => {
   const [documents, setDocuments] = useState([]);
   const [departments, setDepartments] = useState([]);
   const [selectedDeptId, setSelectedDeptId] = useState('');
+  const [query, setQuery] = useState('');
+  const [results, setResults] = useState([]);
 
   useEffect(() => {
     fetchDocuments();
     fetchDepartments();
   }, []);
+
+  useEffect(() => {
+    const fetchResults = async () => {
+      if (query) {
+        try {
+          const response = await api.get(`http://localhost:5000/api/search/dept/docs?query=${query}`);
+          setResults(response.data);
+        } catch (error) {
+          console.error('Error fetching search results:', error);
+        }
+      } else {
+        setResults([]);
+      }
+    };
+
+    fetchResults();
+  }, [query]);
 
   const fetchDocuments = async () => {
     try {
@@ -23,6 +42,10 @@ const Documents = () => {
     } catch (error) {
       console.error('Error fetching documents:', error);
     }
+  };
+
+  const handleChange = (e) => {
+    setQuery(e.target.value);
   };
 
   const fetchDepartments = async () => {
@@ -39,7 +62,6 @@ const Documents = () => {
   };
 
   const handleSendToDept = async (docId) => {
-    // Handle sending the document to the selected department
     if (!selectedDeptId) {
       alert('Please select a department to send the document.');
       return;
@@ -54,8 +76,8 @@ const Documents = () => {
 
       if (response.status === 200) {
         console.log(`Document ${docId} sent to department ${selectedDeptId}`);
-        fetchDocuments(); // Refresh documents after sharing
-        setSelectedDeptId(''); // Reset selected department
+        fetchDocuments();
+        setSelectedDeptId('');
         alert('Document sent successfully.');
       } else if (response.status === 403) {
         alert('Unauthorized: You do not have permission to send documents to this department.');
@@ -74,7 +96,7 @@ const Documents = () => {
         headers: {
           Authorization: `Bearer ${localStorage.getItem('access_token')}`
         },
-        responseType: 'blob'  // Handle binary data
+        responseType: 'blob'
       });
 
       const url = window.URL.createObjectURL(new Blob([response.data]));
@@ -96,7 +118,8 @@ const Documents = () => {
 
   return (
     <div className={styles.documents}>
-      <h2>Documents</h2>
+      <h2>Documents in your Department</h2>
+      <input className={styles.search} type="text" value={query} onChange={handleChange} placeholder="Search..." />
       <table className={styles.documentsTable}>
         <thead>
           <tr>
@@ -108,7 +131,7 @@ const Documents = () => {
           </tr>
         </thead>
         <tbody>
-          {documents.map((doc) => (
+          {(query ? results : documents).map((doc) => (
             <tr key={doc.id}>
               <td>{doc.filename}</td>
               <td>{doc.description}</td>

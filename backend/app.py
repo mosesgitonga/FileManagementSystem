@@ -57,6 +57,7 @@ from routes.users_routes import users_bp
 from routes.departments_routes import dept_bp
 from routes.auth_routes import auth_bp
 from routes.doc_route import doc_bp
+from routes.search_routes import search_bp
 
 # Define user logout route before registering the blueprint
 @auth_bp.route('user/logout', methods=['DELETE'], strict_slashes=False)
@@ -75,6 +76,7 @@ app.register_blueprint(users_bp)
 app.register_blueprint(dept_bp)
 app.register_blueprint(auth_bp)
 app.register_blueprint(doc_bp)
+app.register_blueprint(search_bp)
 
 # Initialize SocketIO
 socketio = SocketIO(app)

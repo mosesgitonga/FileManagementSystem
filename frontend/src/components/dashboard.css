@@ -9,6 +9,7 @@ body {
     left: 28%;
     top: -2%;
     z-index: 20;
+    color: white;
 }
 .first {
     display: flex;
