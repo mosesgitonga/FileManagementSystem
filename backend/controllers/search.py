@@ -32,7 +32,7 @@ class Search:
                 {
                 "id": doc.id,
                 "filename": doc.filename,
-                "filepath": doc.filepath,
+                "description": doc.description,
                 "uploaded_by": doc.uploaded_by,
                 "created_at": doc.created_at,
                 "updated_at": doc.updated_at

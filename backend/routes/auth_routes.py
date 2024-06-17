@@ -9,6 +9,7 @@ storage = DBStorage()
 users = Users()
 auth_bp = Blueprint('auth', __name__, url_prefix='/api/auth')
 
+# /api/auth/user/register
 @auth_bp.route('/user/register', methods=['POST'], strict_slashes=False)
 def register_user():
     try:
