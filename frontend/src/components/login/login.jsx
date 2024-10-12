@@ -27,7 +27,7 @@ const LoginPage = () => {
 
           if (response.status === 200) {
             if (response.data.access_token) {
-              localStorage.setItem('access_token', response.data.access_token); // Or sessionStorage.setItem('access_token', response.data.access_token);
+              sessionStorage.setItem('access_token', response.data.access_token); // Or sessionStorage.setItem('access_token', response.data.access_token);
               navigate('/dashboard'); 
             }
             console.log('access token not found in the response')

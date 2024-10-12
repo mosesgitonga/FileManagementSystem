@@ -11,7 +11,7 @@ const api = axios.create({
 // Add a request interceptor to attach the token to every request
 api.interceptors.request.use(
   (config) => {
-    const token = localStorage.getItem('access_token') || sessionStorage.getItem('access_token');
+    const token = sessionStorage.getItem('access_token') || sessionStorage.getItem('access_token');
     const excludedEndpoints = ['api/auth/login', 'api/auth/register']; // Add other endpoints as needed
 
     if (!excludedEndpoints.includes(config.url) && token) {
